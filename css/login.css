@@ -1,0 +1,48 @@
+/* Login: divisão curva, marcas originais e uma entrada por painel. */
+.login-page .login-wrap { max-width: 1080px; width: calc(100% - 96px); min-height: 0; height: min(640px, calc(100dvh - 136px)); grid-template-columns: 1fr 1.06fr; margin: 16px auto; border-radius: 22px; background: var(--primaria); }
+.login-page .login-brand { padding: 34px; background: transparent; }
+.login-page .login-brand h2 { font-size: clamp(30px, 2.7vw, 38px); line-height: 1.12; letter-spacing: -.055em; max-width: 390px; }
+.login-page .login-brand p { max-width: 365px; }
+.login-page .login-brand-lista { gap: 13px; }
+.login-page .login-brand-lista div { font-size: 12px; }
+.login-page .login-form-side { position: relative; min-width: 0; padding: 30px 38px; gap: 14px; background: var(--superficie); border-top-left-radius: 56px; }
+.login-heading h1 { font-size: 28px; line-height: 1.2; letter-spacing: -.055em; font-weight: 600; }
+.login-heading p { margin-top: 9px; font-size: 12px; line-height: 1.6; color: var(--texto-2); }
+.login-page .login-abas button { min-height: 34px; font-size: 12px; font-weight: 600; }
+.social-login { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.social-button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 46px; padding: 10px 12px; border: 1px solid #bfc9c2; border-radius: 8px; background: #fff; color: #1f1f1f; font: inherit; font-size: 11px; font-weight: 500; cursor: pointer; transition: transform 160ms var(--ease-out), background-color 160ms ease; }
+.social-button img { width: 20px; height: 20px; object-fit: contain; flex: none; }
+.social-button:active { transform: scale(.98); }
+.login-form-stack { position: relative; }
+.login-form-stack > .is-leaving { position: absolute; inset: 0 0 auto; pointer-events: none; }
+.login-divider { display: flex; align-items: center; gap: 12px; font-size: 10px; color: var(--texto-2); }
+.login-divider::before, .login-divider::after { content: ''; height: 1px; background: var(--borda); flex: 1; }
+.login-page .login-form { gap: 12px; }
+.login-page .input { min-height: 42px; }
+.login-page .login-dica { font-size: 10px; line-height: 1.6; }
+@media (hover: hover) and (pointer: fine) { .social-button:hover { transform: translateY(-2px); background: #f7faf7; } }
+@media (prefers-reduced-motion: no-preference) {
+  .login-ready .login-form-side { animation: login-form-in 600ms var(--ease-out) both; }
+  .login-ready .login-brand { animation: login-brand-in 700ms 60ms var(--ease-out) both; }
+}
+@keyframes login-form-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes login-brand-in { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+@media (max-width: 1100px) { .login-page .login-wrap { width: calc(100% - 64px); }.login-page .login-brand { padding: 28px; }.login-page .login-form-side { padding: 26px 28px; }.social-button { font-size: 11px; } }
+@media (min-width: 821px) and (max-width: 940px) { .social-login { grid-template-columns: 1fr; } }
+@media (min-width: 821px) and (max-height: 650px) { .login-page .login-wrap { height: auto; min-height: 510px; } }
+@media (max-width: 820px) {
+  .login-page .login-wrap { width: calc(100% - 44px); grid-template-columns: 1fr; height: auto; min-height: 0; margin: 18px auto 36px; }
+  .login-page .login-brand { padding: 34px 34px 56px; gap: 28px; min-height: 480px; }
+  .login-page .login-brand h2 { max-width: 500px; font-size: 36px; }
+  .login-page .login-form-side { border-radius: 38px 38px 0 0; margin-top: -25px; padding: 35px 34px; }
+  .social-login { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 460px) {
+  .login-page .login-wrap { width: calc(100% - 28px); border-radius: 17px; }
+  .login-page .login-brand { padding: 29px 26px 53px; min-height: 480px; }
+  .login-page .login-brand h2 { font-size: 32px; }
+  .login-page .login-form-side { padding: 32px 25px; border-top-left-radius: 32px; border-top-right-radius: 32px; }
+  .login-heading h1 { font-size: 28px; }
+  .social-login { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .login-ready .login-brand, .login-ready .login-form-side { animation: none; } }

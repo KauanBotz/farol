@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="css/page-shell.css?v=farol-final-6">
+  <script src="js/page-shell.js?v=farol-final-6"></script>
+  <title>Farol: Registrar ocorrência</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=farol-final-4">
+  <link rel="stylesheet" href="css/navbar.css?v=farol-final-2">
+  <script src="js/navbar.js?v=farol-final-2" defer></script>
+</head>
+<body>
+  <header class="navbar site-nav">
+    <div class="nav-island">
+    <a class="navbar-marca nav-brand" href="index.html" aria-label="Farol: ir para o mapa">
+      <span class="logo" aria-hidden="true"><img src="assets/logo-farol.png" alt=""></span><span class="nav-wordmark">farol</span>
+    </a>
+    <nav class="navbar-links nav-links" aria-label="Navegação principal">
+      <a href="index.html"><span class="material-symbols-rounded" aria-hidden="true">map</span> Mapa</a>
+      <a href="rota.html"><span class="material-symbols-rounded" aria-hidden="true">route</span> Rota</a>
+      <a href="alertas.html"><span class="material-symbols-rounded" aria-hidden="true">notifications</span> Alertas</a>
+      <a href="painel.html"><span class="material-symbols-rounded" aria-hidden="true">monitoring</span> Painel</a>
+      <a href="sobre.html"><span class="material-symbols-rounded" aria-hidden="true">info</span> Sobre</a>
+      <a href="download.html"><span class="material-symbols-rounded" aria-hidden="true">download</span> Download</a>
+    </nav>
+    <div class="navbar-acoes nav-actions">
+      <a class="btn btn-primario btn-sm nav-cta" href="registrar.html" data-registrar><span class="material-symbols-rounded" aria-hidden="true">add</span> Registrar</a>
+      <a class="avatar" href="login.html" aria-label="Conta" title="Entrar / conta">KR</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="container container-narrow">
+    <div class="registro-abertura">
+      <h1>Registrar uma ocorrência</h1>
+      <p>Fotografe o problema, marque o local e deixe a IA calcular o risco do trecho. O registro acontece numa janela, em 4 passos.</p>
+      <button class="btn btn-primario" type="button" id="btAbrirModal"><span class="material-symbols-rounded" aria-hidden="true">add</span> Começar registro</button>
+    </div>
+  </main>
+
+  <script src="js/data.js?v=farol-final-2"></script>
+  <script src="js/app.js?v=farol-final-2"></script>
+  <script src="js/registro.js?v=farol-final-2"></script>
+</body>
+</html>

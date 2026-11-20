@@ -1,0 +1,42 @@
+/* Aba Download: badges das lojas e apresentação do app. */
+.download-page { background: var(--ground); }
+.download-hero { position: relative; overflow: hidden; padding: 172px 0 32px; text-align: center; }
+.download-hero::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(46% 52% at 50% 34%, rgb(217 227 169 / .34), transparent 74%), radial-gradient(34% 38% at 22% 22%, rgb(154 194 173 / .26), transparent 72%); }
+.download-hero .wrap { position: relative; }
+.download-hero h1 { margin: 22px auto 0; font-size: clamp(50px, 7vw, 96px); font-weight: 500; line-height: 1.02; letter-spacing: -.055em; }
+.download-hero h1 em { position: relative; display: inline-block; color: var(--green); font-style: italic; }
+.download-hero p { max-width: 540px; margin: 22px auto 0; color: var(--muted); font-size: 17px; line-height: 1.7; }
+.download-actions { position: relative; display: inline-block; margin-top: 34px; }
+.download-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.store-badge { display: inline-flex; align-items: center; gap: 11px; min-height: 58px; padding: 8px 18px 8px 15px; border: 1px solid #0f1b18; border-radius: 12px; background: #0f1b18; color: #fff; box-shadow: 0 8px 22px -14px rgb(15 27 24 / .45); transition: transform .18s var(--ease-out), background-color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.store-badge svg { width: 26px; height: 26px; flex-shrink: 0; }
+.store-badge > span { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; text-align: left; }
+.store-badge small { font-size: 8px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #c8d4cc; }
+.store-badge strong { font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
+.store-badge:hover { transform: translateY(-2px); background: var(--green); border-color: var(--green); box-shadow: 0 12px 26px -16px rgb(20 90 70 / .5); }
+.store-badge:active { transform: translateY(0) scale(.98); }
+.download-closing { margin: 0 12px 12px; padding: 70px 0; border-radius: 25px; background: var(--green); color: #fff; }
+#no-app { padding-top: 28px; }
+.download-closing .wrap { display: flex; align-items: center; justify-content: space-between; gap: 36px; }
+.download-closing h2 { color: #fff; margin-top: 10px; }
+.download-closing p { max-width: 470px; margin-top: 18px; color: #d4e1d9; font-size: 14px; }
+.download-closing-actions { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; margin-top: 26px; }
+.download-closing .button-dark { background: var(--paper); color: var(--green); }
+.download-closing .text-link { color: #e7f0e8; }
+@media (max-width: 900px) {
+  .download-hero { padding: 145px 0 32px; }
+  .download-closing .wrap { display: block; }
+}
+@media (max-width: 640px) {
+  .download-hero { padding: 130px 0 26px; }
+  .download-hero h1 { font-size: clamp(42px, 11vw, 58px); }
+  .download-hero p { font-size: 14px; }
+  .download-actions { display: block; margin-top: 26px; }
+  .download-badges { flex-direction: column; align-items: center; }
+  .store-badge { width: min(100%, 250px); justify-content: center; min-height: 54px; }
+  #no-app { padding-top: 22px; }
+  .download-closing { margin-inline: 7px; padding: 52px 0; border-radius: 18px; }
+  .download-closing-actions { flex-direction: column; align-items: stretch; gap: 12px; }
+  .download-closing-actions .button { width: 100%; }
+  .download-closing-actions .text-link { justify-content: center; }
+}

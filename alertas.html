@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="css/page-shell.css?v=farol-final-6">
+  <script src="js/page-shell.js?v=farol-final-6"></script>
+  <title>Farol: Alertas da região</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=farol-final-4">
+  <link rel="stylesheet" href="css/navbar.css?v=farol-final-2">
+  <script src="js/navbar.js?v=farol-final-2" defer></script>
+</head>
+<body>
+  <header class="navbar site-nav">
+    <div class="nav-island">
+    <a class="navbar-marca nav-brand" href="index.html" aria-label="Farol: ir para o mapa">
+      <span class="logo" aria-hidden="true"><img src="assets/logo-farol.png" alt=""></span><span class="nav-wordmark">farol</span>
+    </a>
+    <nav class="navbar-links nav-links" aria-label="Navegação principal">
+      <a href="index.html"><span class="material-symbols-rounded" aria-hidden="true">map</span> Mapa</a>
+      <a href="rota.html"><span class="material-symbols-rounded" aria-hidden="true">route</span> Rota</a>
+      <a href="alertas.html" class="ativo" aria-current="page"><span class="material-symbols-rounded" aria-hidden="true">notifications</span> Alertas</a>
+      <a href="painel.html"><span class="material-symbols-rounded" aria-hidden="true">monitoring</span> Painel</a>
+      <a href="sobre.html"><span class="material-symbols-rounded" aria-hidden="true">info</span> Sobre</a>
+      <a href="download.html"><span class="material-symbols-rounded" aria-hidden="true">download</span> Download</a>
+    </nav>
+    <div class="navbar-acoes nav-actions">
+      <a class="btn btn-primario btn-sm nav-cta" href="registrar.html" data-registrar><span class="material-symbols-rounded" aria-hidden="true">add</span> Registrar</a>
+      <a class="avatar" href="login.html" aria-label="Conta" title="Entrar / conta">KR</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="alertas-grid">
+      <aside class="alertas-filtros">
+        <div class="page-heading">
+          <h1 class="titulo-pagina">Alertas da região</h1>
+          <p class="texto-2" style="font-size:13.5px">Ocorrências recentes num raio do bairro Jardim das Flores.</p>
+        </div>
+        <div class="segmento" id="seletorRaio" role="group" aria-label="Raio de busca">
+          <button type="button" data-raio="500" aria-pressed="false">500 m</button>
+          <button type="button" data-raio="1000" class="ativo" aria-pressed="true">1 km</button>
+          <button type="button" data-raio="3000" aria-pressed="false">3 km</button>
+        </div>
+
+        <p class="alertas-contagem" id="contagem">…</p>
+
+        <div class="cartao">
+          <div class="chips" id="chipsAlertas" role="group" aria-label="Filtrar por categoria"></div>
+        </div>
+
+        <label class="switch-linha">
+          <span>
+            <strong>Só depois das 19h</strong>
+            <small>Mostrar apenas ocorrências com risco noturno</small>
+          </span>
+          <input type="checkbox" id="soNoite" aria-label="Só depois das 19h">
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </aside>
+
+      <section aria-live="polite">
+        <div class="lista-alertas" id="listaAlertas"></div>
+        <div class="vazio" id="vazio" hidden>
+          <span class="vazio-icone" aria-hidden="true"><span class="material-symbols-rounded">notifications</span></span>
+          <strong>Nenhum alerta por aqui</strong>
+          <p>Ajuste o raio ou os filtros para ver outras ocorrências.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/data.js?v=farol-final-2"></script>
+  <script src="js/app.js?v=farol-final-2"></script>
+  <script src="js/registro.js?v=farol-final-2"></script>
+  <script>
+    (function () {
+      var raio = 1000; // metros
+      var categoria = null;
+      var soNoite = false;
+
+      var listaEl = document.getElementById('listaAlertas');
+      var vazioEl = document.getElementById('vazio');
+      var contagemEl = document.getElementById('contagem');
+
+      /* Raio */
+      document.getElementById('seletorRaio').addEventListener('click', function (e) {
+        var bt = e.target.closest('button[data-raio]');
+        if (!bt) return;
+        raio = parseInt(bt.dataset.raio, 10);
+        this.querySelectorAll('button').forEach(function (b) {
+          b.classList.toggle('ativo', b === bt);
+          b.setAttribute('aria-pressed', String(b === bt));
+        });
+        renderizar();
+      });
+
+      /* Chips de categoria */
+      var chipsEl = document.getElementById('chipsAlertas');
+      function montarChips() {
+        chipsEl.innerHTML = '';
+        var todos = document.createElement('button');
+        todos.type = 'button';
+        todos.className = 'chip ativo';
+        todos.textContent = 'Todos';
+        todos.setAttribute('aria-pressed', 'true');
+        todos.addEventListener('click', function () {
+          categoria = null;
+          chipsEl.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('ativo'); c.setAttribute('aria-pressed', 'false'); });
+          todos.classList.add('ativo');
+          todos.setAttribute('aria-pressed', 'true');
+          renderizar();
+        });
+        chipsEl.appendChild(todos);
+
+        Farol.ORDEM_CATEGORIAS.forEach(function (key) {
+          var cat = CATEGORIAS[key];
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'chip chip-cor';
+          chip.style.setProperty('--cor-cat', cat.cor);
+          chip.innerHTML = '<span class="chip-ponto" aria-hidden="true"></span>' + cat.label;
+          chip.setAttribute('aria-pressed', 'false');
+          chip.addEventListener('click', function () {
+            var jaAtivo = categoria === key;
+            categoria = jaAtivo ? null : key;
+            chipsEl.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('ativo'); c.setAttribute('aria-pressed', 'false'); });
+            if (!jaAtivo) { chip.classList.add('ativo'); chip.setAttribute('aria-pressed', 'true'); }
+            else { todos.classList.add('ativo'); todos.setAttribute('aria-pressed', 'true'); }
+            renderizar();
+          });
+          chipsEl.appendChild(chip);
+        });
+      }
+
+      /* Toggle noturno */
+      document.getElementById('soNoite').addEventListener('change', function (e) {
+        soNoite = e.target.checked;
+        renderizar();
+      });
+
+      /* Renderização */
+      function renderizar() {
+        var ref = REFERENCIA_BAIRRO;
+        var itens = Farol.ocorrencias()
+          .filter(function (o) { return !categoria || o.categoria === categoria; })
+          .filter(function (o) { return Farol.distanciaKm(ref, o) * 1000 <= raio; })
+          .filter(function (o) { return !soNoite || new Date(o.dataHora).getHours() >= 19; })
+          .sort(function (a, b) { return new Date(b.dataHora) - new Date(a.dataHora); });
+
+        var rotuloRaio = raio >= 3000 ? '3 km' : raio >= 1000 ? '1 km' : '500 m';
+        contagemEl.innerHTML = '<b>' + itens.length + '</b> alerta' + (itens.length === 1 ? '' : 's') +
+          ' num raio de ' + rotuloRaio + ' no ' + ref.nome;
+
+        listaEl.innerHTML = '';
+        itens.forEach(function (o) {
+          var cat = CATEGORIAS[o.categoria] || CATEGORIAS.buraco;
+          var f = Farol.riscoFaixa(o.indiceRisco);
+          var a = document.createElement('a');
+          a.className = 'item-alerta';
+          a.href = 'detalhe.html?id=' + encodeURIComponent(o.id);
+          a.title = o.titulo + ', ' + o.enderecoAproximado;
+          a.innerHTML =
+            '<span class="item-alerta-icone" style="--cor-cat:' + cat.cor + '">' + Farol.iconeSVG(o.categoria) + '</span>' +
+            '<span class="item-alerta-corpo">' +
+              '<span class="item-alerta-topo"><strong>' + Farol.esc(o.titulo) + '</strong>' +
+                '<span class="pill-risco faixa-' + f.classe + '">Risco ' + o.indiceRisco + '</span></span>' +
+              '<span class="item-alerta-end">' + Farol.esc(o.enderecoAproximado) + '</span>' +
+              '<span class="item-alerta-tempo">' + Farol.tempoRelativo(o.dataHora) + '</span>' +
+            '</span>' +
+            '<span class="item-alerta-seta" aria-hidden="true"><span class="material-symbols-rounded">chevron_right</span></span>';
+          listaEl.appendChild(a);
+        });
+
+        vazioEl.hidden = itens.length > 0;
+      }
+
+      montarChips();
+      renderizar();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Pasta reservada para as fotos reais das ocorrências.
+
+Como usar: coloque as imagens aqui (ex.: assets/foto-1.jpg) e
+troque o campo `foto` de cada ocorrência em js/data.js para
+"assets/foto-1.jpg". Veja o README.

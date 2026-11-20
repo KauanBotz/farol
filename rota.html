@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="css/page-shell.css?v=farol-final-6">
+  <script src="js/page-shell.js?v=farol-final-6"></script>
+  <title>Farol: Rota segura</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css?v=farol-final-4">
+  <link rel="stylesheet" href="css/navbar.css?v=farol-final-2">
+  <script src="js/navbar.js?v=farol-final-2" defer></script>
+</head>
+<body>
+  <header class="navbar site-nav">
+    <div class="nav-island">
+    <a class="navbar-marca nav-brand" href="index.html" aria-label="Farol: ir para o mapa">
+      <span class="logo" aria-hidden="true"><img src="assets/logo-farol.png" alt=""></span><span class="nav-wordmark">farol</span>
+    </a>
+    <nav class="navbar-links nav-links" aria-label="Navegação principal">
+      <a href="index.html"><span class="material-symbols-rounded" aria-hidden="true">map</span> Mapa</a>
+      <a href="rota.html" class="ativo" aria-current="page"><span class="material-symbols-rounded" aria-hidden="true">route</span> Rota</a>
+      <a href="alertas.html"><span class="material-symbols-rounded" aria-hidden="true">notifications</span> Alertas</a>
+      <a href="painel.html"><span class="material-symbols-rounded" aria-hidden="true">monitoring</span> Painel</a>
+      <a href="sobre.html"><span class="material-symbols-rounded" aria-hidden="true">info</span> Sobre</a>
+      <a href="download.html"><span class="material-symbols-rounded" aria-hidden="true">download</span> Download</a>
+    </nav>
+    <div class="navbar-acoes nav-actions">
+      <a class="btn btn-primario btn-sm nav-cta" href="registrar.html" data-registrar><span class="material-symbols-rounded" aria-hidden="true">add</span> Registrar</a>
+      <a class="avatar" href="login.html" aria-label="Conta" title="Entrar / conta">KR</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="margin-bottom:18px">
+      <h1 class="titulo-pagina">Rota segura</h1>
+      <p class="texto-2" style="font-size:13.5px">Compare o caminho mais rápido com o mais seguro. O traçado segue as ruas.</p>
+    </div>
+
+    <div class="rota-grid">
+      <div class="rota-controles">
+        <div class="cartao campos-rota">
+          <div class="campo-rota">
+            <span class="ponto ponto-inicio" aria-hidden="true"></span>
+            <input class="input" id="origem" value="Rua do Comércio, 120" aria-label="Origem">
+          </div>
+          <div class="campo-rota">
+            <span class="ponto ponto-fim" aria-hidden="true"></span>
+            <input class="input" id="destino" value="Av. Central, 520" aria-label="Destino">
+            <button class="bt-trocar" id="btTrocar" type="button" aria-label="Inverter origem e destino"><span class="material-symbols-rounded" aria-hidden="true">swap_vert</span></button>
+          </div>
+          <p class="rota-aviso" id="rotaAviso">Endereços ilustrativos. O traçado segue as ruas.</p>
+          <button class="btn btn-primario btn-bloco" type="button" id="btTracar">
+            <span class="material-symbols-rounded" aria-hidden="true">route</span> Traçar rota
+          </button>
+        </div>
+
+        <div class="segmento" id="seletorPeriodo" role="group" aria-label="Horário da rota">
+          <button type="button" data-periodo="agora" class="ativo" aria-pressed="true"><span class="material-symbols-rounded" aria-hidden="true">light_mode</span> Agora</button>
+          <button type="button" data-periodo="noite" aria-pressed="false"><span class="material-symbols-rounded" aria-hidden="true">dark_mode</span> À noite</button>
+          <button type="button" data-periodo="madrugada" aria-pressed="false"><span class="material-symbols-rounded" aria-hidden="true">schedule</span> Madrugada</button>
+        </div>
+
+        <div class="cartoes-comparacao">
+          <button class="cartao-comparacao ativa" id="cartaoSegura" type="button">
+            <span class="cmp-topo"><strong>Mais segura</strong><span class="etiqueta-ativa">Ativa</span></span>
+            <span class="cmp-tempo"><b id="segTempo">17</b> min</span>
+            <span class="cmp-linhas"><span id="segDist">5,1 km</span><span class="pill-risco faixa-baixa" id="segRisco">Risco 21</span></span>
+          </button>
+          <button class="cartao-comparacao" id="cartaoRapida" type="button">
+            <span class="cmp-topo"><strong>Mais rápida</strong></span>
+            <span class="cmp-tempo"><b id="rapTempo">12</b> min</span>
+            <span class="cmp-linhas"><span id="rapDist">4,2 km</span><span class="pill-risco faixa-media" id="rapRisco">Risco 58</span></span>
+          </button>
+        </div>
+
+        <section class="cartao por-que">
+          <h2><span class="material-symbols-rounded" aria-hidden="true">verified_user</span> Por que essa rota é mais segura?</h2>
+          <ul>
+            <li>Desvia dos trechos com risco alto no horário escolhido.</li>
+            <li>Prefere vias com iluminação funcionando e calçadas regulares.</li>
+            <li>Passa por ciclovia sinalizada e com baixo histórico de ocorrências.</li>
+          </ul>
+          <p class="mapa-credito" id="creditoRotas" style="margin-top:10px">Rotas simuladas.</p>
+        </section>
+      </div>
+
+      <div class="mapa-rota-wrap">
+        <div id="mapaRota" aria-label="Mapa com as rotas rápida e segura"></div>
+        <div class="mapa-rota-legenda" aria-hidden="true">
+          <span class="legenda-item"><i class="linha-demo linha-segura"></i> Rota segura</span>
+          <span class="legenda-item"><i class="linha-demo linha-rapida"></i> Rota rápida</span>
+          <span class="legenda-item"><i class="circulo-demo"></i> Trecho crítico</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+  <script src="js/data.js?v=farol-final-2"></script>
+  <script src="js/map.js?v=farol-final-2"></script>
+  <script src="js/app.js?v=farol-final-2"></script>
+  <script src="js/registro.js?v=farol-final-2"></script>
+  <script>
+    (function () {
+      var periodo = 'agora';
+      var rotaAtiva = 'segura';
+      var polyRapida = null;
+      var polySegura = null;
+      var carregando = false;
+
+      var estado = {
+        rotas: [],
+        rapida: null,
+        segura: null,
+        unica: false,
+        fonte: 'mock',
+      };
+
+      /* ---------- Mapa ---------- */
+      var mapa = FarolMap.criarMapa(document.getElementById('mapaRota'), {
+        pontos: ROTAS.rapida.pontos.concat(ROTAS.segura.pontos),
+        padding: [60, 60],
+        maxZoom: 15,
+        zoomControl: true,
+        zoomPosition: 'topright',
+      });
+
+      FarolMap.pinInicioFim(mapa, INICIO_ROTA, FIM_ROTA);
+
+      var camadasTrechos = [];
+      function renderizarTrechos() {
+        camadasTrechos.forEach(function (c) { mapa.removeLayer(c); });
+        camadasTrechos = FarolMap.adicionarTrechos(mapa, Farol.trechos(), periodo);
+      }
+      renderizarTrechos();
+
+      function rotaMock(rota) {
+        return {
+          pontos: rota.pontos,
+          distanciaKm: rota.distanciaKm,
+          tempoMin: rota.tempoMin,
+          duration: rota.tempoMin * 60,
+          risco: {
+            agora: rota.risco.agora,
+            noite: rota.risco.noite,
+            madrugada: rota.risco.madrugada,
+          },
+        };
+      }
+
+      function usarMocks() {
+        estado.rotas = [rotaMock(ROTAS.rapida), rotaMock(ROTAS.segura)];
+        estado.rapida = estado.rotas[0];
+        estado.segura = estado.rotas[1];
+        estado.unica = false;
+        estado.fonte = 'mock';
+        desenharRotas();
+        document.getElementById('creditoRotas').textContent =
+          'Rotas simuladas.';
+        document.getElementById('rotaAviso').textContent =
+          'Traçado aproximado. Origem e destino ilustrativos.';
+      }
+
+      function formatarKm(valor) {
+        return valor.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' km';
+      }
+
+      function atualizarCartoes() {
+        if (!estado.rapida || !estado.segura) return;
+        var r = estado.rapida;
+        var s = estado.segura;
+        document.getElementById('rapTempo').textContent = r.tempoMin;
+        document.getElementById('rapDist').textContent = formatarKm(r.distanciaKm);
+        document.getElementById('segTempo').textContent = s.tempoMin;
+        document.getElementById('segDist').textContent = formatarKm(s.distanciaKm);
+
+        var fr = Farol.riscoFaixa(r.risco[periodo]);
+        var fs = Farol.riscoFaixa(s.risco[periodo]);
+        var rapRisco = document.getElementById('rapRisco');
+        rapRisco.textContent = 'Risco ' + r.risco[periodo];
+        rapRisco.className = 'pill-risco faixa-' + fr.classe;
+        var segRisco = document.getElementById('segRisco');
+        segRisco.textContent = 'Risco ' + s.risco[periodo];
+        segRisco.className = 'pill-risco faixa-' + fs.classe;
+      }
+
+      function desenharRotas() {
+        if (polySegura) { mapa.removeLayer(polySegura); polySegura = null; }
+        if (polyRapida) { mapa.removeLayer(polyRapida); polyRapida = null; }
+        if (!estado.segura || !estado.rapida) return;
+
+        polySegura = L.polyline(estado.segura.pontos, {
+          color: '#22C55E',
+          weight: 5,
+          opacity: 1,
+          lineJoin: 'round',
+          lineCap: 'round',
+        }).addTo(mapa);
+        polyRapida = L.polyline(estado.rapida.pontos, {
+          color: '#64748B',
+          weight: 4,
+          opacity: 0.9,
+          dashArray: '6 8',
+          lineJoin: 'round',
+          lineCap: 'round',
+        }).addTo(mapa);
+
+        atualizarEstilosRotas();
+        enquadrarAtiva();
+        atualizarCartoes();
+      }
+
+      function atualizarEstilosRotas() {
+        if (!polySegura || !polyRapida) return;
+        if (rotaAtiva === 'segura') {
+          polySegura.setStyle({ weight: 5, opacity: 1, dashArray: null });
+          polyRapida.setStyle({ weight: 4, opacity: estado.unica ? 0.9 : 0.45, dashArray: '6 8' });
+          if (estado.unica) polyRapida.bringToFront(); else polySegura.bringToFront();
+        } else {
+          polyRapida.setStyle({ weight: 4, opacity: 1, dashArray: '6 8' });
+          polySegura.setStyle({ weight: 5, opacity: estado.unica ? 0.5 : 0.35, dashArray: null });
+          polyRapida.bringToFront();
+        }
+        document.getElementById('cartaoSegura').classList.toggle('ativa', rotaAtiva === 'segura');
+        document.getElementById('cartaoRapida').classList.toggle('ativa', rotaAtiva === 'rapida');
+      }
+
+      function enquadrarAtiva() {
+        var rota = rotaAtiva === 'segura' ? estado.segura : estado.rapida;
+        if (!rota) return;
+        mapa.fitBounds(L.latLngBounds(rota.pontos), { padding: [40, 40], maxZoom: 16 });
+      }
+
+      /* ---------- OSRM ---------- */
+      function prepararRotasOSRM(rotas) {
+        var trechos = Farol.trechos();
+        rotas.forEach(function (rota) {
+          rota.risco = {};
+          ['agora', 'noite', 'madrugada'].forEach(function (p) {
+            rota.risco[p] = FarolMap.riscoRota(rota.pontos, trechos, p);
+          });
+        });
+
+        var rapida = rotas[0];
+        rotas.forEach(function (rota) {
+          if (rota.duration < rapida.duration) rapida = rota;
+        });
+        var limite = rapida.duration * 1.6;
+        var candidatas = rotas.filter(function (rota) { return rota.duration <= limite + 0.5; });
+        var segura = candidatas[0];
+        candidatas.forEach(function (rota) {
+          if (rota.risco.agora < segura.risco.agora) segura = rota;
+        });
+
+        estado.rotas = rotas;
+        estado.rapida = rapida;
+        estado.segura = segura;
+        estado.unica = rotas.length === 1 || segura === rapida;
+        estado.fonte = 'osrm';
+      }
+
+      function rotuloAviso() {
+        if (estado.fonte === 'mock') {
+          return 'Roteamento indisponível: traçado aproximado, origem e destino ilustrativos.';
+        }
+        if (estado.unica) {
+          return estado.rotas.length === 1
+            ? 'O roteador retornou um caminho único. As duas opções usam o mesmo traçado.'
+            : 'A rota mais rápida também é a mais segura. As duas opções usam o mesmo traçado.';
+        }
+        return 'Traçado real pelas ruas. Origem e destino são ilustrativos.';
+      }
+
+      function carregarRotas() {
+        if (carregando) return;
+        carregando = true;
+        var botao = document.getElementById('btTracar');
+        var rotuloOriginal = botao.innerHTML;
+        botao.disabled = true;
+        botao.innerHTML =
+          '<span class="material-symbols-rounded girando" aria-hidden="true">progress_activity</span> Traçando rota…';
+
+        FarolMap.calcularRotas(INICIO_ROTA, FIM_ROTA)
+          .then(function (rotas) {
+            prepararRotasOSRM(rotas);
+            desenharRotas();
+            document.getElementById('creditoRotas').textContent =
+              'Rotas calculadas via OSRM.';
+            document.getElementById('rotaAviso').textContent = rotuloAviso();
+          })
+          .catch(function () {
+            if (estado.fonte !== 'mock') {
+              usarMocks();
+            }
+            document.getElementById('rotaAviso').textContent = rotuloAviso();
+            Farol.toast('Roteamento indisponível agora, mostrando rota aproximada', 'info');
+          })
+          .finally(function () {
+            carregando = false;
+            botao.disabled = false;
+            botao.innerHTML = rotuloOriginal;
+          });
+      }
+
+      /* ---------- Interações ---------- */
+      document.getElementById('cartaoSegura').addEventListener('click', function () {
+        rotaAtiva = 'segura';
+        atualizarEstilosRotas();
+        enquadrarAtiva();
+      });
+      document.getElementById('cartaoRapida').addEventListener('click', function () {
+        rotaAtiva = 'rapida';
+        atualizarEstilosRotas();
+        enquadrarAtiva();
+      });
+
+      document.getElementById('seletorPeriodo').addEventListener('click', function (e) {
+        var bt = e.target.closest('button[data-periodo]');
+        if (!bt) return;
+        periodo = bt.dataset.periodo;
+        this.querySelectorAll('button').forEach(function (b) {
+          b.classList.toggle('ativo', b === bt);
+          b.setAttribute('aria-pressed', String(b === bt));
+        });
+        renderizarTrechos();
+        atualizarCartoes();
+        Farol.toast('Risco recalculado para o horário escolhido.', 'info');
+      });
+
+      document.getElementById('btTracar').addEventListener('click', carregarRotas);
+
+      document.getElementById('btTrocar').addEventListener('click', function () {
+        var o = document.getElementById('origem');
+        var d = document.getElementById('destino');
+        var tmp = o.value;
+        o.value = d.value;
+        d.value = tmp;
+        Farol.toast('Endereços ilustrativos: o traçado usa os pontos do bairro.', 'info');
+      });
+
+      ['origem', 'destino'].forEach(function (id) {
+        document.getElementById(id).addEventListener('change', function () {
+          Farol.toast('Endereços ilustrativos: o traçado usa os pontos do bairro.', 'info');
+        });
+      });
+
+      /* Primeiro resultado: mock imediato; o OSRM substitui quando responder. */
+      usarMocks();
+      carregarRotas();
+    })();
+  </script>
+</body>
+</html>

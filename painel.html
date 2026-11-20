@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="css/page-shell.css?v=farol-final-6">
+  <script src="js/page-shell.js?v=farol-final-6"></script>
+  <title>Farol: Painel do gestor</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=farol-final-4">
+  <link rel="stylesheet" href="css/navbar.css?v=farol-final-2">
+  <script src="js/navbar.js?v=farol-final-2" defer></script>
+</head>
+<body>
+  <div class="painel">
+    <header class="navbar site-nav">
+      <div class="nav-island">
+      <a class="navbar-marca nav-brand" href="index.html" aria-label="Farol: ir para o mapa">
+        <span class="logo" aria-hidden="true"><img src="assets/logo-farol.png" alt=""></span><span class="nav-wordmark">farol</span>
+      </a>
+      <nav class="navbar-links nav-links" aria-label="Navegação principal">
+        <a href="index.html"><span class="material-symbols-rounded" aria-hidden="true">map</span> Mapa</a>
+        <a href="rota.html"><span class="material-symbols-rounded" aria-hidden="true">route</span> Rota</a>
+        <a href="alertas.html"><span class="material-symbols-rounded" aria-hidden="true">notifications</span> Alertas</a>
+        <a href="painel.html" class="ativo" aria-current="page"><span class="material-symbols-rounded" aria-hidden="true">monitoring</span> Painel</a>
+        <a href="sobre.html"><span class="material-symbols-rounded" aria-hidden="true">info</span> Sobre</a>
+        <a href="download.html"><span class="material-symbols-rounded" aria-hidden="true">download</span> Download</a>
+      </nav>
+      <div class="navbar-acoes nav-actions">
+        <a class="btn btn-primario btn-sm nav-cta" href="registrar.html" data-registrar><span class="material-symbols-rounded" aria-hidden="true">add</span> Registrar</a>
+        <a class="avatar" href="login.html" aria-label="Conta" title="Entrar / conta">KR</a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+      </div>
+    </header>
+
+    <main class="painel-main">
+      <div class="painel-cab">
+        <div>
+          <h1>Visão geral de Bela Vista</h1>
+          <p>Dados fictícios do protótipo · atualizado agora</p>
+        </div>
+        <div class="painel-cab-acoes">
+          <label class="painel-bairro"><span>Bairro</span><select aria-label="Bairro"><option>Bela Vista</option><option disabled>Outros bairros (em breve)</option></select></label>
+          <a class="btn btn-fantasma btn-sm" href="index.html"><span class="material-symbols-rounded" aria-hidden="true">map</span> Ver mapa público</a>
+        </div>
+      </div>
+
+      <section class="kpis" aria-label="Indicadores">
+        <div class="kpi">
+          <div class="kpi-topo">
+            <span class="kpi-icone" aria-hidden="true"><span class="material-symbols-rounded">warning</span></span>
+            <span class="kpi-delta" id="deltaAbertas">…</span>
+          </div>
+          <div class="kpi-valor" id="kpiAbertas">…</div>
+          <div class="kpi-rotulo">Ocorrências abertas</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-topo">
+            <span class="kpi-icone" aria-hidden="true"><span class="material-symbols-rounded">timer</span></span>
+            <span class="kpi-delta" id="deltaTempo">…</span>
+          </div>
+          <div class="kpi-valor" id="kpiTempo">…</div>
+          <div class="kpi-rotulo">Tempo médio de reparo</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-topo">
+            <span class="kpi-icone" aria-hidden="true"><span class="material-symbols-rounded">speed</span></span>
+            <span class="kpi-delta" id="deltaCriticos">…</span>
+          </div>
+          <div class="kpi-valor" id="kpiCriticos">…</div>
+          <div class="kpi-rotulo">Trechos críticos (risco ≥ 70)</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-topo">
+            <span class="kpi-icone" aria-hidden="true"><span class="material-symbols-rounded">trending_up</span></span>
+            <span class="kpi-delta" id="deltaResolucao">…</span>
+          </div>
+          <div class="kpi-valor" id="kpiResolucao">…</div>
+          <div class="kpi-rotulo">Taxa de resolução</div>
+        </div>
+      </section>
+
+      <section class="painel-grid">
+        <div class="card-painel">
+          <h2>Ranking de trechos críticos</h2>
+          <p class="card-sub" id="subRanking">Ordenado pelo risco agora · ação encaminha à prefeitura</p>
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Trecho</th>
+                <th>Risco agora</th>
+                <th>Pico</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="corpoRanking"></tbody>
+          </table>
+        </div>
+
+        <div class="card-painel">
+          <h2>Registros por semana</h2>
+          <p class="card-sub">Últimas 8 semanas · dados fictícios</p>
+          <div class="grafico-barras" id="graficoBarras" role="img" aria-label="Gráfico de barras: registros por semana"></div>
+        </div>
+      </section>
+
+      <section class="card-painel">
+        <h2>Últimas ocorrências</h2>
+        <p class="card-sub">Mais recentes primeiro</p>
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Ocorrência</th>
+              <th>Categoria</th>
+              <th>Registrada</th>
+              <th>Risco</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="corpoRecentes"></tbody>
+        </table>
+      </section>
+
+      <p class="painel-rodape">Farol · projeto acadêmico FIAP · todos os dados são fictícios</p>
+    </main>
+  </div>
+
+  <script src="js/data.js?v=farol-final-2"></script>
+  <script src="js/app.js?v=farol-final-2"></script>
+  <script src="js/registro.js?v=farol-final-2"></script>
+  <script>
+    (function () {
+      /* ---------- KPIs ---------- */
+      function renderizarKpis() {
+        var ocs = Farol.ocorrencias();
+        var abertas = ocs.filter(function (o) { return o.status === 'aberta'; }).length;
+        var resolvidas = ocs.filter(function (o) { return o.status === 'resolvida'; }).length;
+        var taxa = ocs.length ? Math.round((resolvidas / ocs.length) * 100) : 0;
+        var trechosLista = Farol.trechos();
+        var criticos = trechosLista.filter(function (t) { return t.risco.agora >= 70; }).length;
+
+        document.getElementById('kpiAbertas').textContent = abertas;
+        document.getElementById('kpiTempo').textContent =
+          MOCK_KPI.tempoMedioReparoDias.toLocaleString('pt-BR') + ' dias';
+        document.getElementById('kpiCriticos').textContent = criticos;
+        document.getElementById('kpiResolucao').textContent = taxa + '%';
+
+        document.getElementById('deltaAbertas').textContent = MOCK_KPI.deltaAbertas;
+        document.getElementById('deltaTempo').textContent = MOCK_KPI.deltaTempoReparo;
+        document.getElementById('deltaCriticos').textContent = MOCK_KPI.deltaCriticos;
+        document.getElementById('deltaResolucao').textContent = MOCK_KPI.deltaResolucao;
+      }
+
+      /* ---------- Ranking de trechos ---------- */
+      var corpoRanking = document.getElementById('corpoRanking');
+
+      function renderizarRanking() {
+        var trechosLista = Farol.trechos()
+          .slice()
+          .sort(function (a, b) { return b.risco.agora - a.risco.agora; });
+
+        corpoRanking.innerHTML = '';
+        var encaminhados = 0;
+        trechosLista.forEach(function (t, i) {
+          var risco = t.risco.agora;
+          var f = Farol.riscoFaixa(risco);
+          var encaminhado = t.status === 'encaminhado';
+          if (encaminhado) encaminhados++;
+
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td><b>' + (i + 1) + 'º</b></td>' +
+            '<td class="td-trecho"><strong>' + Farol.esc(t.nome) + '</strong><span>pico: ' + t.horarioPico.toLowerCase() + '</span></td>' +
+            '<td class="td-risco">' +
+              '<div class="barra-risco"><i style="width:' + risco + '%;background:' + f.cor + '"></i></div>' +
+              '<b style="color:' + f.cor + '">' + risco + '</b>' +
+            '</td>' +
+            '<td>' + t.horarioPico + '</td>' +
+            '<td>' + (encaminhado
+              ? '<span class="badge badge-status-encaminhada"><i></i>Encaminhado</span>'
+              : '<span class="badge badge-status-em-analise"><i></i>Mapeado</span>') + '</td>' +
+            '<td>' + (encaminhado
+              ? '<button class="btn-mini encaminhado" type="button" disabled>Encaminhada ✓</button>'
+              : '<button class="btn-mini" type="button" data-encaminhar="' + t.id + '">Encaminhar</button>') + '</td>';
+          corpoRanking.appendChild(tr);
+        });
+
+        document.getElementById('subRanking').textContent =
+          'Ordenado pelo risco agora. ' + encaminhados + ' de ' + trechosLista.length + ' encaminhados';
+      }
+
+      corpoRanking.addEventListener('click', function (e) {
+        var bt = e.target.closest('button[data-encaminhar]');
+        if (!bt) return;
+        var id = bt.dataset.encaminhar;
+        Farol.setStatusTrecho(id, 'encaminhado');
+        renderizarRanking();
+        Farol.toast('Trecho encaminhado para a prefeitura.');
+      });
+
+      /* ---------- Gráfico de barras (CSS puro) ---------- */
+      function renderizarGrafico() {
+        var max = Math.max.apply(null, MOCK_SEMANAS.map(function (s) { return s.registros; }));
+        var el = document.getElementById('graficoBarras');
+        el.innerHTML = '';
+        MOCK_SEMANAS.forEach(function (s) {
+          var coluna = document.createElement('div');
+          coluna.className = 'barra-coluna';
+          coluna.innerHTML =
+            '<b>' + s.registros + '</b>' +
+            '<i style="height:' + Math.round((s.registros / max) * 100) + '%" title="' + s.registros + ' registros"></i>' +
+            '<span>' + s.rotulo + '</span>';
+          el.appendChild(coluna);
+        });
+      }
+
+      /* ---------- Últimas ocorrências ---------- */
+      function renderizarRecentes() {
+        var recentes = Farol.ocorrencias()
+          .slice()
+          .sort(function (a, b) { return new Date(b.dataHora) - new Date(a.dataHora); })
+          .slice(0, 6);
+        var corpo = document.getElementById('corpoRecentes');
+        corpo.innerHTML = '';
+        recentes.forEach(function (o) {
+          var cat = CATEGORIAS[o.categoria] || CATEGORIAS.buraco;
+          var f = Farol.riscoFaixa(o.indiceRisco);
+          var tr = document.createElement('tr');
+          tr.title = o.titulo;
+          tr.innerHTML =
+            '<td class="td-trecho"><strong>' + Farol.esc(o.titulo) + '</strong><span>' + Farol.esc(o.enderecoAproximado) + '</span></td>' +
+            '<td><span class="badge badge-cat" style="--cor-cat:' + cat.cor + '"><i></i>' + cat.label + '</span></td>' +
+            '<td>' + Farol.tempoRelativo(o.dataHora) + '</td>' +
+            '<td><span class="pill-risco faixa-' + f.classe + '">' + o.indiceRisco + '</span></td>' +
+            '<td><span class="badge badge-status-' + o.status + '"><i></i>' + Farol.ROTULO_STATUS[o.status] + '</span></td>';
+          corpo.appendChild(tr);
+        });
+      }
+
+      renderizarKpis();
+      renderizarRanking();
+      renderizarGrafico();
+      renderizarRecentes();
+    })();
+  </script>
+</body>
+</html>
